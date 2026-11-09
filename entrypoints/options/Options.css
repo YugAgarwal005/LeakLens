@@ -1,0 +1,143 @@
+/* LeakLens — Options Page Styles */
+@import '../popup/style.css';
+
+body { background: var(--bg); min-height: 100vh; }
+
+/* ── Layout ── */
+.options-root {
+  display: flex; flex-direction: column;
+  max-width: 860px; margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* ── Top bar ── */
+.options-topbar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px 32px 18px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg) 100%);
+  position: sticky; top: 0; z-index: 10;
+}
+.options-logo {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(124,106,247,0.35);
+  display: flex; align-items: center; justify-content: center;
+}
+.options-logo img { width: 24px; }
+.options-title { font-size: 18px; font-weight: 700; letter-spacing: -0.4px; }
+.options-subtitle { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+/* ── Tab bar ── */
+.tab-bar {
+  display: flex; gap: 2px; padding: 16px 32px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: var(--font); font-size: 13px; font-weight: 600;
+  padding: 8px 16px; border: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  cursor: pointer; white-space: nowrap; background: transparent;
+  color: var(--text-dim); border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--text); background: var(--bg-2); }
+.tab-btn.active {
+  color: var(--accent-light);
+  border-bottom-color: var(--accent);
+  background: var(--bg-1);
+}
+
+/* ── Content area ── */
+.options-content { flex: 1; padding: 28px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+/* ── Settings group ── */
+.settings-group { display: flex; flex-direction: column; gap: 16px; }
+.settings-group-title {
+  font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.2px;
+}
+.settings-group-desc { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+
+/* ── Setting row ── */
+.setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 14px 16px;
+  background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  transition: border-color 0.2s;
+}
+.setting-row:hover { border-color: var(--border-light); }
+.setting-row-info { flex: 1; min-width: 0; }
+.setting-row-label { font-size: 13px; font-weight: 600; color: var(--text); }
+.setting-row-desc  { font-size: 11px; color: var(--text-dim); margin-top: 2px; line-height: 1.4; }
+
+/* ── Detector grid ── */
+.detector-grid { display: flex; flex-direction: column; gap: 8px; }
+
+/* ── Domain list ── */
+.domain-add-form {
+  display: flex; gap: 8px; align-items: center;
+}
+.domain-add-form .input { flex: 1; }
+.domain-list { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.domain-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; background: var(--bg-1);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  transition: border-color 0.2s;
+}
+.domain-item:hover { border-color: var(--border-light); }
+.domain-item-name { flex: 1; font-size: 12px; font-weight: 600; font-family: monospace; color: var(--text-sub); }
+.domain-item-remove {
+  font-size: 11px; color: var(--text-dim); background: none; border: none;
+  cursor: pointer; padding: 3px 6px; border-radius: 4px; transition: all 0.15s;
+}
+.domain-item-remove:hover { color: var(--danger); background: rgba(255,71,87,0.1); }
+
+/* ── Policy tab grid ── */
+.policy-tab-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .policy-tab-grid { grid-template-columns: 1fr; } }
+
+/* ── Custom rule form ── */
+.rule-form {
+  background: var(--bg-1); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 14px;
+}
+.rule-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-label { font-size: 11px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.4px; }
+.field-hint  { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.field-error { font-size: 11px; color: var(--danger); margin-top: 4px; }
+
+/* ── Rule list ── */
+.rule-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.rule-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; background: var(--bg-1);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  transition: border-color 0.2s;
+}
+.rule-item:hover { border-color: var(--border-light); }
+.rule-item-info { flex: 1; min-width: 0; }
+.rule-item-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.rule-item-pattern {
+  font-size: 11px; color: var(--text-dim); font-family: monospace;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  max-width: 300px; margin-top: 2px;
+}
+.rule-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ── Save indicator ── */
+.save-indicator {
+  display: flex; align-items: center; gap: 6px; font-size: 12px;
+  color: var(--success); opacity: 0;
+  transition: opacity 0.3s;
+}
+.save-indicator.visible { opacity: 1; }
+
+/* ── Footer ── */
+.options-footer {
+  padding: 16px 32px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  color: var(--text-dim); font-size: 11px;
+}

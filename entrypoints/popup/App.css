@@ -1,0 +1,95 @@
+/* LeakLens — Popup Styles */
+@import './style.css';
+
+body { width: 320px; min-height: 200px; }
+
+/* ── Root ── */
+.popup-root { display: flex; flex-direction: column; height: 100%; min-height: 200px; }
+
+/* ── Header ── */
+.popup-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #13131c 0%, #16162a 100%);
+}
+.popup-logo-wrap {
+  width: 32px; height: 32px; border-radius: 10px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(124,106,247,0.35);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.popup-logo-wrap img { width: 22px; height: 22px; }
+.popup-wordmark { flex: 1; }
+.popup-wordmark h1 {
+  font-size: 14px; font-weight: 700; letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.popup-wordmark p { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+
+/* ── Site Status ── */
+.site-status {
+  margin: 12px; padding: 10px 12px;
+  background: var(--bg-1); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; gap: 10px;
+}
+.site-status-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+.dot-active  { background: var(--success); color: var(--success); }
+.dot-trusted { background: var(--info);    color: var(--info); }
+.dot-excluded{ background: var(--text-dim);color: var(--text-dim); }
+.dot-stricter{ background: var(--warning); color: var(--warning); }
+.site-status-info { flex: 1; min-width: 0; }
+.site-status-origin {
+  font-size: 11px; font-weight: 600; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.site-status-policy { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+
+/* ── Session Stats ── */
+.session-section { padding: 0 12px 4px; }
+.session-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.stat-card {
+  background: var(--bg-1); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px;
+  display: flex; flex-direction: column; gap: 4px;
+  transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: var(--border-light); }
+.stat-count { font-size: 22px; font-weight: 700; line-height: 1; letter-spacing: -1px; }
+.stat-label { font-size: 10px; color: var(--text-dim); font-weight: 500; }
+.stat-zero  { color: var(--text-dim); }
+.stat-low   { color: var(--accent-light); }
+.stat-med   { color: var(--warning); }
+.stat-high  { color: var(--danger); }
+
+/* ── Master toggle row ── */
+.master-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-1); border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.master-toggle-label { font-size: 12px; color: var(--text-sub); }
+
+/* ── Footer actions ── */
+.popup-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px 12px; gap: 8px;
+  border-top: 1px solid var(--border);
+}
+.popup-footer-link {
+  font-size: 11px; color: var(--text-dim); text-decoration: none;
+  display: flex; align-items: center; gap: 4px;
+  transition: color 0.15s;
+}
+.popup-footer-link:hover { color: var(--accent-light); }

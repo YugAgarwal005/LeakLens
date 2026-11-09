@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeakLens — Live Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f18; --bg1: #15151f; --bg2: #1c1c28;
+      --border: #2e2e42; --text: #e8e8f4; --sub: #8888aa;
+      --accent: #7c6af7; --danger: #ff4757; --success: #2ed573;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; padding: 40px 20px;
+      background-image: radial-gradient(ellipse at 15% 0%, rgba(124,106,247,.12) 0%, transparent 55%);
+    }
+
+    .container { max-width: 720px; margin: 0 auto; }
+
+    h1 {
+      font-size: 32px; font-weight: 800; letter-spacing: -1px;
+      background: linear-gradient(135deg, #fff 0%, #c4bcff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 8px;
+    }
+    .subtitle { color: var(--sub); font-size: 14px; margin-bottom: 36px; }
+
+    .scenario { margin-bottom: 32px; }
+    .scenario-title {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .scenario-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    form {
+      background: var(--bg1); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 14px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 11px; font-weight: 600; color: var(--sub); text-transform: uppercase; letter-spacing: 0.4px; }
+    input, textarea, select {
+      background: var(--bg2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 12px; font-size: 13px; font-family: inherit;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124,106,247,.2);
+    }
+    input::placeholder, textarea::placeholder { color: #44445a; }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    .hint { font-size: 11px; color: #44445a; font-style: italic; }
+
+    .submit-btn {
+      background: var(--accent); color: #fff; border: none;
+      padding: 11px 20px; border-radius: 8px; font-size: 13px;
+      font-weight: 700; cursor: pointer; transition: all 0.15s;
+      align-self: flex-start;
+    }
+    .submit-btn:hover { background: #9d8ffb; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,106,247,.4); }
+
+    .tip-box {
+      background: rgba(124,106,247,.08); border: 1px solid rgba(124,106,247,.25);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 28px;
+      font-size: 13px; color: var(--sub); line-height: 1.6;
+    }
+    .tip-box strong { color: var(--text); }
+
+    .scenarios-nav {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
+    }
+    .nav-pill {
+      padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--border); background: var(--bg1);
+      color: var(--sub); transition: all 0.15s;
+    }
+    .nav-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>🔍 LeakLens Demo</h1>
+  <p class="subtitle">Load the extension, then try typing sensitive data into these fields. LeakLens will warn you before you submit.</p>
+
+  <div class="tip-box">
+    <strong>How to trigger warnings:</strong> Type or paste the sample values shown in the placeholders.
+    A badge will appear while you type. Submit the form to see the full blocking warning dialog.
+  </div>
+
+  <div class="scenarios-nav">
+    <span class="nav-pill">🪪 Aadhaar</span>
+    <span class="nav-pill">🗂 PAN</span>
+    <span class="nav-pill">💳 Credit Card</span>
+    <span class="nav-pill">🏦 UPI / Bank</span>
+    <span class="nav-pill">🔑 API Key</span>
+    <span class="nav-pill">📞 Contact Info</span>
+  </div>
+
+  <!-- Scenario 1: Government ID leakage -->
+  <section class="scenario">
+    <div class="scenario-title">🪪 Scenario 1 — Government IDs in a contact form</div>
+    <form id="contact-form" action="https://httpbin.org/post" method="POST">
+      <div class="form-row">
+        <div class="field">
+          <label for="fullname">Full Name</label>
+          <input id="fullname" name="fullname" type="text" placeholder="Rahul Sharma" />
+        </div>
+        <div class="field">
+          <label for="email1">Email</label>
+          <input id="email1" name="email" type="email" placeholder="rahul@example.com" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="aadhaar">Aadhaar Number ⚠</label>
+          <input id="aadhaar" name="aadhaar" type="text" placeholder="2345 6789 0124 — try this!" />
+          <span class="hint">Try: 2345 6789 0124 (passes strict Verhoeff checksum algorithm)</span>
+        </div>
+        <div class="field">
+          <label for="pan">PAN Card ⚠</label>
+          <input id="pan" name="pan" type="text" placeholder="ABCPC1234A — try this!" />
+          <span class="hint">Try: ABCPC1234A (valid Indian PAN: 5 letters + 4 digits + 1 letter)</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="message1">Message</label>
+        <textarea id="message1" name="message" placeholder="Type your message here..."></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Submit Contact Form →</button>
+    </form>
+  </section>
+
+  <!-- Scenario 2: Payment data -->
+  <section class="scenario">
+    <div class="scenario-title">💳 Scenario 2 — Payment details in a checkout form</div>
+    <form id="payment-form" action="https://httpbin.org/post" method="POST">
+      <div class="form-row">
+        <div class="field">
+          <label for="card-num">Card Number ⚠</label>
+          <input id="card-num" name="card" type="text" placeholder="5555 5555 5555 4444 — try this!" />
+          <span class="hint">Try: 5555 5555 5555 4444 (Luhn-valid Mastercard test number)</span>
+        </div>
+        <div class="field">
+          <label for="card-exp">Expiry</label>
+          <input id="card-exp" name="expiry" type="text" placeholder="12/28" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="upi-id">UPI ID ⚠</label>
+          <input id="upi-id" name="upi" type="text" placeholder="yourname@okaxis — try this!" />
+          <span class="hint">Try: yourname@okaxis or 9876543210@oksbi</span>
+        </div>
+        <div class="field">
+          <label for="ifsc">IFSC Code ⚠</label>
+          <input id="ifsc" name="ifsc" type="text" placeholder="SBIN0001234 — try this!" />
+          <span class="hint">Try: SBIN0001234 (valid SBI IFSC format)</span>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">Place Order →</button>
+    </form>
+  </section>
+
+  <!-- Scenario 3: Credentials leak -->
+  <section class="scenario">
+    <div class="scenario-title">🔑 Scenario 3 — API key or secret in a text field</div>
+    <form id="api-form" action="https://httpbin.org/post" method="POST">
+      <div class="field">
+        <label for="repo-desc">Repository Description</label>
+        <textarea id="repo-desc" name="description"
+          placeholder="Describe your project... (try pasting: ghp_1234567890abcdefghijklmnopqrstuvwxyzAB)">
+        </textarea>
+        <span class="hint">Try pasting a GitHub PAT (e.g. ghp_1234567890abcdefghijklmnopqrstuvwxyzAB) or AWS key (e.g. AKIAIOSFODNN7EXAMPLE)</span>
+      </div>
+      <div class="field">
+        <label for="api-key-field">API Key field ⚠</label>
+        <input id="api-key-field" name="apikey" type="text"
+          placeholder="sk_test_1234567890abcdefghijklmnopqrstuv — try this!" />
+        <span class="hint">Try: sk_test_1234567890abcdefghijklmnopqrstuv (Stripe key format)</span>
+      </div>
+      <button type="submit" class="submit-btn">Save Configuration →</button>
+    </form>
+  </section>
+
+  <!-- Scenario 4: Accidental password paste -->
+  <section class="scenario">
+    <div class="scenario-title">🔐 Scenario 4 — Accidental password paste in wrong field</div>
+    <form id="feedback-form" action="https://httpbin.org/post" method="POST">
+      <div class="field">
+        <label for="feedback-text">Feedback / Bug Report</label>
+        <textarea id="feedback-text" name="feedback"
+          placeholder="Describe the issue... (try pasting: MySecr3t!P@ssw0rd here)"></textarea>
+        <span class="hint">Try pasting a complex password like MySecr3t!P@ssw0rd in this comment box</span>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="phone-field">Phone Number ⚠</label>
+          <input id="phone-field" name="phone" type="text" placeholder="9876543210 — try this!" />
+          <span class="hint">Try: 9876543210 (Indian mobile starting with 9)</span>
+        </div>
+        <div class="field">
+          <label for="email-unexpected">Email in wrong field ⚠</label>
+          <input id="email-unexpected" name="reference" type="text"
+            placeholder="user@example.com in a non-email field" />
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">Submit Feedback →</button>
+    </form>
+  </section>
+
+</div>
+</body>
+</html>
+
